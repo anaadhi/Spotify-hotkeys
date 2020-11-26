@@ -1,5 +1,6 @@
 
 const {Builder, By, Key, until} = require('selenium-webdriver');
+let chrome = require('selenium-webdriver/chrome');
 
 const iohook = require('iohook')
 
@@ -8,6 +9,7 @@ console.log(user);
 
 (async function example() {
     let driver = await new Builder().forBrowser('chrome').build();
+
     try {
         // Navigate to Url
         await driver.get('https://open.spotify.com/');
@@ -29,15 +31,23 @@ console.log(user);
         console.log("done")
     }
     finally{
+        play = driver.findElement(By.className('control-button spoticon-play-16 control-button--circled'))
+        play.click();
+        var state = "paused"
         iohook.on("keypress",async event => {
             if(event.keychar == 112){
-                const play = driver.findElement(By.className('control-button spoticon-pause-16 control-button--circled'))
-                console.log(play)
+                if (state == "paused"){
+                play = driver.findElement(By.className('control-button spoticon-pause-16 control-button--circled'))
+                state = "playing"
+                } else {
+                play = driver.findElement(By.className('control-button spoticon-play-16 control-button--circled'))
+                state = "paused"
+                }
                 play.click();
             }
             if(event.keychar == 93){
-                const next = driver.findElement(By.className('control-button spoticon-skip-forward-16'))
-                next.click();
+                const next = driver.findElement(By.className('control-button spoticon-skip-forward-16'))             
+                next.click(); 
             }
             if(event.keychar == 91){
                 const prev = driver.findElement(By.className('bc13c597ccee51a09ec60253c3c51c75-scss'))
