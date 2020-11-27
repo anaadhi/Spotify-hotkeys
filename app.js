@@ -5,7 +5,6 @@ let chrome = require('selenium-webdriver/chrome');
 const iohook = require('iohook')
 
 const user = require('./config.json');
-console.log(user);
 
 (async function example() {
     let driver = await new Builder().forBrowser('chrome').build();
@@ -31,9 +30,6 @@ console.log(user);
         console.log("done")
     }
     finally{
-        play = driver.findElement(By.className('control-button spoticon-play-16 control-button--circled'))
-        play.click();
-        var state = "paused"
         var enabled = true;
         iohook.on("keypress",async event => {
             if(event.shiftKey && event.keychar == 88){
@@ -44,21 +40,15 @@ console.log(user);
                 }
             }
             if (enabled){
-                if(event.keychar == 112){
-                    if (state == "paused"){
-                    play = driver.findElement(By.className('control-button spoticon-pause-16 control-button--circled'))
-                    state = "playing"
-                    } else {
-                    play = driver.findElement(By.className('control-button spoticon-play-16 control-button--circled'))
-                    state = "paused"
-                    }
+                if(event.keychar == user.playpause){
+                    play = driver.findElement(By.className('_82ba3fb528bb730b297a91f46acd37a3-scss'))
                     play.click();
                 }
-                if(event.keychar == 93){
+                if(event.keychar == user.next){
                     const next = driver.findElement(By.className('control-button spoticon-skip-forward-16'))             
                     next.click(); 
                 }
-                if(event.keychar == 91){
+                if(event.keychar == user.previous){
                     const prev = driver.findElement(By.className('bc13c597ccee51a09ec60253c3c51c75-scss'))
                     prev.click();
                 }

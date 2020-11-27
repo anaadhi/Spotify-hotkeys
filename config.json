@@ -1,4 +1,8 @@
 {
     "email":"",
-    "password":""
+    "password":"",
+    "enterkeychars" : "below",
+    "playpause" : 112,
+    "next": 93,
+    "previous": 91
 }
