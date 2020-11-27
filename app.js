@@ -1,5 +1,5 @@
 
-const {Builder, By, Key, until} = require('selenium-webdriver');
+const {Builder, By, Key, until, EventEmitter} = require('selenium-webdriver');
 let chrome = require('selenium-webdriver/chrome');
 
 const iohook = require('iohook')
@@ -34,24 +34,34 @@ console.log(user);
         play = driver.findElement(By.className('control-button spoticon-play-16 control-button--circled'))
         play.click();
         var state = "paused"
+        var enabled = true;
         iohook.on("keypress",async event => {
-            if(event.keychar == 112){
-                if (state == "paused"){
-                play = driver.findElement(By.className('control-button spoticon-pause-16 control-button--circled'))
-                state = "playing"
+            if(event.shiftKey && event.keychar == 88){
+                if (enabled){
+                    enabled = false;
                 } else {
-                play = driver.findElement(By.className('control-button spoticon-play-16 control-button--circled'))
-                state = "paused"
+                    enabled = true;
                 }
-                play.click();
             }
-            if(event.keychar == 93){
-                const next = driver.findElement(By.className('control-button spoticon-skip-forward-16'))             
-                next.click(); 
-            }
-            if(event.keychar == 91){
-                const prev = driver.findElement(By.className('bc13c597ccee51a09ec60253c3c51c75-scss'))
-                prev.click();
+            if (enabled){
+                if(event.keychar == 112){
+                    if (state == "paused"){
+                    play = driver.findElement(By.className('control-button spoticon-pause-16 control-button--circled'))
+                    state = "playing"
+                    } else {
+                    play = driver.findElement(By.className('control-button spoticon-play-16 control-button--circled'))
+                    state = "paused"
+                    }
+                    play.click();
+                }
+                if(event.keychar == 93){
+                    const next = driver.findElement(By.className('control-button spoticon-skip-forward-16'))             
+                    next.click(); 
+                }
+                if(event.keychar == 91){
+                    const prev = driver.findElement(By.className('bc13c597ccee51a09ec60253c3c51c75-scss'))
+                    prev.click();
+                }
             }
         });
         iohook.start();
